@@ -31,7 +31,7 @@
     <% if (locals.loggedin==false) { %>
       
     <form action="/signin" class="mt-1" >
-    <button  class="btn btn-outline-dark " type="submit">Sign In | Sign Up</button>
+    <button  class="btn btn-outline-dark  " type="submit" style="width: 50%;">Sign In | Sign Up</button>
    </form>
     </div>
  
@@ -99,22 +99,22 @@
       <div class="row mb-5">
         
         <form action="/period/:10" class="col-3" >
-        <button class="btn btn-primary btn-lg rounded-pill w-100" type="submit" >10 Days Period</button>
+        <button class="btn btn-primary  rounded-pill w-100" type="submit" >10 Days Period</button>
         </form>
      
       
         <form action="/period/:50" class="col-3" >
-        <button class="btn btn-secondary btn-lg  rounded-pill w-100" type="submit" >50 Days Period</button>
+        <button class="btn btn-secondary   rounded-pill w-100" type="submit" >50 Days Period</button>
         </form>
     
        
         <form action="/period/:90" class="col-3 "  >
-        <button class="btn btn-info rounded-pill btn-lg w-100" type="submit" >3 Months Period</button>
+        <button class="btn btn-info rounded-pill  w-100" type="submit" >3 Months Period</button>
       </form>
    
       
       <form action="/period/:365" class="col-3" >
-        <button class="btn btn-dark rounded-pill btn-lg w-100" type="submit" >1 Year Period</button>
+        <button class="btn btn-dark rounded-pill  w-100" type="submit" >1 Year Period</button>
       </form>
   
       </div>
@@ -169,17 +169,17 @@
         <% if(change2>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success w-10 " >Buy</button>
+         <button type="button" class="btn btn-success" style="width: 50%;" >Buy</button>
       
          <%} else if(change2<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+           <button type="button" class="btn btn-danger "  style="width: 50%;">Sell</button>
         
            <%} else { %>
              
               
-            <button type="button" class="btn btn-warning w-10 " style="color:whitesmoke; background-color: orange;">Hold</button>
+            <button type="button" class="btn btn-warning " style="color:whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
@@ -187,17 +187,17 @@
         <% if(change>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success w-10 ">Buy</button>
+         <button type="button" class="btn btn-success " style="width: 50%;">Buy</button>
       
          <%} else if(change<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+           <button type="button" class="btn btn-danger " style="width: 50%;" >Sell</button>
         
            <%} else { %>
              
               
-             <button type="button" class="btn btn-warning w-10 " style="color: whitesmoke; background-color: orange;">Hold</button>
+             <button type="button" class="btn btn-warning " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
@@ -205,17 +205,17 @@
         <% if(change3>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success w-10 " >Buy</button>
+         <button type="button" class="btn btn-success " style="width: 50%;">Buy</button>
       
          <%} else if(change3<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+           <button type="button" class="btn btn-danger" style="width: 50%;" >Sell</button>
         
            <%} else { %>
              
               
-            <button type="button" class="btn btn-warning w-10 " style="color: whitesmoke; background-color: orange;">Hold</button>
+            <button type="button" class="btn btn-warning w-60 " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
