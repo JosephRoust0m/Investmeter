@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/styles/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <title>Investmeter</title>
+</head>
+
+<style>
+.welcome {
+  width: 100%;
+  position: relative;
+  animation: mymove 2s ;
+  animation-delay: 0s;
+}
+#second{
+  position: relative;
+  animation: mymove 2s ;
+  animation-delay: 0s;
+}
+#third{
+  position: relative;
+  animation: mymove 2s ;
+  animation-delay: 0s;
+}
+
+@keyframes mymove {
+  from {left: -50%;}
+  to {left: 0%;}
+}
+</style>
+
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-1 border-bottom" id="gradient-background" >
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4" style="color:white">Investmeter</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/" class="nav-link" id="one" style="color:white">Stocks Data</a></li>
+        <li class="nav-item"><a href="/news" class="nav-link" id="one" style="color:white">News</a></li>
+        <!--
+        <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Posts</a></li>
+        <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white"> Contribute</a></li>
+        -->
+      </ul>
+    </header>
+
+  <body >
+  <div class="container">
+    <% if(locals.error || locals.success || locals.errorOriginal || locals.errorsize){ %>
+      <h1 style="text-align: center;" class="mt-5 mb-5 "  >
+      <%}else{ %>
+        <h1 style="text-align: center;" class="mt-5 mb-5 welcome" id="div" >
+      <%}%>
+    
+      Welcome to Investmeter
+    </h1>
+  </div>
+    <section >
+      <div class="container col-xl-10 col-xxl-8 ">
+        <div class="row align-items-center g-lg-5 ">
+           <!--
+
+       
+         
+           
+              <h1 class="h3 mb-3 mt-5 fw-normal " >Sign in here</h1>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control " id="floatingInput" name="username">
+                <label for="floatingInput" >Email address</label>
+              </div>
+              <div class="form-floating mb-3 w-50">
+                <input type="password" class="form-control " id="floatingPassword" name="password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <div  id="signIn">
+              <button class="btn btn-dark w-25 py-2 btn-lg " type="submit">Sign in</button>
+            </div>
+            </div>
+          </div>
+          </form>
+          -->
+          <% if(locals.error || locals.success || locals.errorOriginal || locals.errorsize){ %>
+            <div class="mx-auto col-5 mt-5 "  >
+            <%}else{ %>
+              <div class="mx-auto col-5 mt-5 " id="second" >
+            <%}%>
+          
+            <form class="p-4 p-md-5 border rounded-3 " action="/signin/check" method="post">
+              <div class="container px-10" style="padding-left: 20%;">
+              <h1 class="h3 mb-3  fw-normal " style="font-family: Verdana, Geneva, Tahoma, sans-serif;" > Sign in here </h1>
+            </div>
+              <div class="form-floating mb-5">
+                
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="username">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating mb-5">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <label for="floatingPassword">Password</label>
+              </div>
+             
+              <button class="w-100 btn btn-lg btn-dark" type="submit" >Sign in</button>
+
+
+            </form>
+           <% if(locals.error){ %>
+          <div class="container mt-5" >
+            <h2 style="color: rgb(147, 7, 7); font-size: 15pt;">
+              <%=error%>
+            </h2>
+          </div>
+           <% } else {%>
+
+            <div>
+              <h3 style="color:white" style="visibility: hidden;">hey yooolllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll</h3>
+            </div>
+            <%}%>
+          
+        </div>
+
+        
+        <% if(locals.error || locals.success || locals.errorOriginal || locals.errorsize){ %>
+          <div class="mx-auto col-5 mt-5"  >
+          <%}else{ %>
+            <div class="mx-auto col-5 mt-5" id="third" >
+          <%}%>
+          
+            <form class="p-4 p-md-5 border rounded-3 " action="/signup" method="post">
+              <div class="container" style="padding-left: 20%;">
+              <h1 class="h3 mb-3  fw-normal " style="font-family: Verdana, Geneva, Tahoma, sans-serif;" > Sign up here </h1>
+            </div>
+              <div class="form-floating mb-3">
+                
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingName" placeholder="username_1" name="username">
+                <label for="floatingName">Username</label>
+              </div>
+             
+              <button class="w-100 btn btn-lg btn-dark" type="submit" >Sign up</button>
+             <!--
+              <hr class="my-4">
+              <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+              -->
+            </form>
+
+
+            <% if(locals.errorOriginal){ %>
+              <div class="container mt-3" >
+                <h2 style="color: rgb(147, 7, 7); font-size: 15pt;">
+                  <%=errorOriginal%>
+                </h2>
+              </div>
+               <% } else if(locals.errorsize){%>
+                <div class="container mt-3 " >
+                  <h2 style="color: rgb(147, 7, 7); font-size: 15pt;">
+                    <%=errorsize%>
+                  </h2>
+                </div>
+                 <% } else if(locals.success){%>
+                  <div class="container mt-3" >
+                    <h2 style="color: rgb(7, 147, 79); font-size: 15pt;">
+                      You have signed Up ! You can Log In to your account
+                    </h2>
+                  </div>
+                   <% } else {%>
+
+                    <div>
+                      <h3 style="color:white" style="visibility: hidden;" >hey yooolllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll</h3>
+                    </div>
+                    <%}%>
+          </div>
+        </div>
+      </div>
+
+  </body>
+
+
+  
+
+  <%- include("partials/footer.ejs"); %>
+
+ 

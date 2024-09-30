@@ -1,0 +1,23 @@
+<%- include("partials/header.ejs"); %>
+<body>
+  <% if (!locals.title) { %>
+  <div class=" container">
+  <form action="/write" method="post">
+    <input name="subject" type="text" class="feedback-input" placeholder="What do you want to talk about ?" />
+    <textarea name="text" class="feedback-input" placeholder="Write it here"></textarea>
+    <input type="submit" value="SUBMIT" formaction="/write"/>
+  </form>
+</div>
+<% } else if (locals.title) { %>
+  <div class=" container">
+    <form action="/write/<%=targetform%>" method="POST" >
+      <input name="subject" type="text" class="feedback-input" placeholder="What do you want to talk about ?"  value="<%= title %> " />
+      <textarea name="text" class="feedback-input" placeholder="Write it here" ><%= cont%>
+      </textarea>
+      <input type="submit" value="SUBMIT" formaction="/write/<%=targetform%>"/>
+    </form>
+  </div>
+<% } %>
+
+</body>
+

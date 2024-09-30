@@ -1,0 +1,79 @@
+#one{
+    display:flex;
+}
+
+#gradient-background {
+    background: linear-gradient(300deg,black,gray);
+    background-size: 180% 180%;
+    animation: gradient-animation 18s ease infinite;
+  }
+  
+  @keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  form {
+    margin-top: 50px;
+  }
+  
+  .feedback-input {
+    color: black;
+    font-weight: 500;
+    font-size: 18px;
+    border-radius: 5px;
+    line-height: 22px;
+    background-color: transparent;
+    border: 2px solid black;
+    transition: all 0.3s;
+    padding: 13px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: 0;
+  }
+  
+  .feedback-input:focus {
+    border: 2px solid black;
+  }
+  
+  textarea {
+    height: 150px;
+    line-height: 150%;
+    resize: vertical;
+  }
+  
+  [type="submit"] {
+    width: 100%;
+    background: black;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: all 0.3s;
+    margin-top: -4px;
+    font-weight: 700;
+  }
+  [type="submit"]:hover {
+    background: black;
+  }
+
+  .btn{
+    width:25%;
+  }
+
+  .verticalLine{
+    margin-left: 10%;
+  }
+
+  

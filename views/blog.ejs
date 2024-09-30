@@ -1,0 +1,32 @@
+<%- include("partials/header.ejs"); %>
+
+<body>
+  <div class="container py-4 ziz">
+        
+    <% if (locals.posts){ %>
+      <% for (var i=0; i< posts.length; i++){ %>
+       
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static mt-1">
+            <h2 class="d-inline-block mb-2 text-dark-emphasis mt-1"><%=posts[i].title %></h2>
+            <div class="mb-1 text-body-secondary mb-1 mt-1"><%=posts[i].time %></div>
+            <h3 class="card-text mb-auto mt-auto"><%=posts[i].content %></h3>
+            <strong class="d-inline-block mb-2 mt-2 text-primary-emphasis"><%=posts[i].author %></strong>
+       <% if(posts[i].author == author){ %>
+          <div class="container" id="containermain">
+            <form action="/write/:<%= posts[i].id %>" method="get">
+                <button  class="btn  btn-lg btn-outline-success px-4 gap-3" formaction="/write/:<%= posts[i].id %>" type="submit">Edit</button>
+              </form>
+            <form action="/blog/:<%= posts[i].id %>" method="post">
+                <button class=" delete btn  btn-lg btn-outline-danger px-4 gap-3" formaction="/blog/:<%= posts[i].id %>" type="submit">Delete</button>
+              </form>
+            </div>
+            <%}%>
+          </div>
+        </div>
+   <% } %>
+   <% } %>
+          </div>
+    </body>
+
+    <%- include("partials/footer.ejs"); %>

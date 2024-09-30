@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/styles/main.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+</head>
+
+<header class="d-flex flex-wrap justify-content-center py-3 mb-1 border-bottom" id="gradient-background" >
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+    <span class="fs-4" style="color:white">Investmeter</span>
+  </a>
+
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a href="/" class="nav-link" id="one" style="color:white">Stocks Data</a></li>
+    <li class="nav-item"><a href="/news" class="nav-link" id="one" style="color:white">News</a></li>
+    <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Posts</a></li>
+    <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
+  </ul>
+</header>
+<div class="justify-content-end">
+<div class="row">
+  <div class="col-md-6"></div>
+  <div class="text-end col-md-6">
+    <% if (locals.loggedin==false) { %>
+      
+    <form action="/signin" class="mt-1" >
+    <button  class="btn btn-outline-dark " type="submit">Sign In | Sign Up</button>
+   </form>
+    </div>
+ 
+  <% } else if (locals.loggedin==true) {%>
+    <form action="/signout" class="mt-1">
+      <button  class="btn btn-danger " type="submit">Sign Out</button>
+    </form>
+    <%}%>
+  </div>
+</div>
+</div>
+
+<body>
+
+  <% if (locals.error){ %>
+<div class="container">
+<h2 style="color: rgb(147, 7, 7); font-size: 15pt; ">
+<%=error%>
+</h2>
+</div>
+
+<form action="/choose" method="POST">
+<div class="container mb-5 ">
+  <div class="form-floating " id="firstContainer" >
+    <input class="form-control " id="floatingInput" name="stock" type="text"  >
+    <label for="floatingInput" >Search for your desired stock</label> 
+    <div  >
+      <button class="btn btn-dark py-2 btn-lg my-1" type="submit">Search</button>
+    </div>
+  </div>
+</form>
+<div class="container">
+<h1 style="visibility: hidden;">
+  Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisis massa semper pretium purus torquent at mattis nisl erat. Sem elit egestas fringilla eu neque luctus. Posuere est vestibulum felis; euismod suscipit felis. Mi integer justo bibendum lacus, turpis risus rhoncus suscipit. Ultrices elit faucibus metus inceptos, bibendum turpis ultricies. Conubia nam donec aenean eget justo consequat fusce in.
+  Varius netus hendrerit dictum dapibus fermentum. Massa eleifend curabitur risus urna cras elementum. Egestas ut lorem proin, cursus convallis aliquam. Nisl augue accumsan facilisi dapibus natoque faucibus tristique. Adipiscing vitae auctor platea etiam suscipit integer primis 
+
+</h1>
+</div>
+</div>
+<%  }  else {%>
+
+  
+<form action="/choose" method="POST">
+  <div class="container mb-5 ">
+    <div class="form-floating " id="firstContainer" >
+      <input class="form-control " id="floatingInput" name="stock" type="text"  >
+      <label for="floatingInput" >Search for your desired stock</label> 
+      <div  >
+        <button class="btn btn-dark py-2 btn-lg my-1" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+  
+    <% if(!locals.stock && !locals.period){ %>
+    <h1 class="h3 mb-5 mt-5 fw-normal " style="text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif;"> Chart representing the daily closing prices of AAPL for the last 3 months </h1>
+    <%} else if (locals.stock && !locals.period){ %>
+      <h1 class="h3 mb-5 mt-5 fw-normal " style="text-align: center;">Chart representing the daily closing prices of <%=stock%> for the last 3 months</h1>
+      <%} else if (locals.stock && locals.period){ %>
+        <h1 class="h3 mb-5 mt-5 fw-normal " style="text-align: center;">Chart representing the daily closing prices of <%=stock%> for the last <%=period%></h1>
+      <%} else if (!locals.stock && locals.period){%>
+        <h1 class="h3 mb-5 mt-5 fw-normal " style="text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif;"> Chart representing the daily closing prices of AAPL for the last <%=period%> </h1>
+    <%}%>
+      
+
+      <div class="row mb-5">
+        
+        <form action="/period/:10" class="col-3" >
+        <button class="btn btn-primary btn-lg rounded-pill w-100" type="submit" >10 Days Period</button>
+        </form>
+     
+      
+        <form action="/period/:50" class="col-3" >
+        <button class="btn btn-secondary btn-lg  rounded-pill w-100" type="submit" >50 Days Period</button>
+        </form>
+    
+       
+        <form action="/period/:90" class="col-3 "  >
+        <button class="btn btn-info rounded-pill btn-lg w-100" type="submit" >3 Months Period</button>
+      </form>
+   
+      
+      <form action="/period/:365" class="col-3" >
+        <button class="btn btn-dark rounded-pill btn-lg w-100" type="submit" >1 Year Period</button>
+      </form>
+  
+      </div>
+   
+
+<canvas id="myChart" height="100" >
+  </canvas>
+
+
+  <p style="align-items: center; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> Data of the most recent trading day: </p>
+  <table class="table table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Open</th>
+        <th scope="col">Close</th>
+        <th scope="col">Low</th>
+        <th scope="col">High</th>
+        <th scope="col">Volume</th>
+        <th scope="col">Volume-Weighted Average Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      <td><%=open %>$</td>
+      <td><%=close %>$</td>
+      <td><%=low %>$</td>
+      <td><%=high %>$</td>
+      <td><%=volume %>$</td>
+      <td><%=vw %>$</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+</div>
+</form>
+
+<div class="container predictions" >
+<p style="align-items: center; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> What to do next: </p> 
+  <table class="table table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Position For The Next 2 Weeks : </th>
+        <th scope="col">Position For The Next 50 Days :</th>
+        <th scope="col">Position For The Next Year :</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      <td>
+        <% if(change2>0.75){ %>
+          
+          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
+         <button type="button" class="btn btn-success w-10 " >Buy</button>
+      
+         <%} else if(change2<-0.75){ %>
+           
+         <!--   <div class="container mt-5">-->
+           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+        
+           <%} else { %>
+             
+              
+            <button type="button" class="btn btn-warning w-10 " style="color:whitesmoke; background-color: orange;">Hold</button>
+          
+            <%}%>
+      </td>
+      <td>
+        <% if(change>0.75){ %>
+          
+          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
+         <button type="button" class="btn btn-success w-10 ">Buy</button>
+      
+         <%} else if(change<-0.75){ %>
+           
+         <!--   <div class="container mt-5">-->
+           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+        
+           <%} else { %>
+             
+              
+             <button type="button" class="btn btn-warning w-10 " style="color: whitesmoke; background-color: orange;">Hold</button>
+          
+            <%}%>
+      </td>
+      <td>
+        <% if(change3>0.75){ %>
+          
+          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
+         <button type="button" class="btn btn-success w-10 " >Buy</button>
+      
+         <%} else if(change3<-0.75){ %>
+           
+         <!--   <div class="container mt-5">-->
+           <button type="button" class="btn btn-danger w-10 "  >Sell</button>
+        
+           <%} else { %>
+             
+              
+            <button type="button" class="btn btn-warning w-10 " style="color: whitesmoke; background-color: orange;">Hold</button>
+          
+            <%}%>
+      </td>
+
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  </div>
+
+  
+    
+
+
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+     <script>
+      
+      var closings = "<%= locals.prices %>";
+      var period = "<%= locals.number %>";
+      var arrayofPrices= closings.split(",");
+      var closingPrices=[];
+      for (var i=0; i<arrayofPrices.length;i++){
+        closingPrices.push(parseFloat(arrayofPrices[i]));
+      }
+     
+     
+      const ctx = document.getElementById('myChart');
+      const x=[];
+      /*
+      for(var i=0; i<65;i++){
+      
+       x.push(i);
+     }
+     */
+var now = new Date();
+now.setDate(now.getDate()-period);
+var nownow= new Date();
+nownow.setDate(nownow.getDate()+1);
+//console.log(nownow);
+for (var d = now; d <=nownow; d.setDate(d.getDate() + 1)) {
+  var day= new Date(d).getDate();
+ var month= new Date(d).getMonth()+1;
+var form = month+"/"+day;
+  if(new Date(d).getDay()!==6 && new Date(d).getDay()!==0 && (form!=="09/02")&&(form!=="11/28")
+  &&(form!=="12/25") &&(form !=="1/1") &&(form!=="1/20")&&(form!=="2/17") &&(form!=="4/18")
+  &&(form!=="5/27") &&(form!=="7/4" &&(form!=="6/19"))){
+
+    x.push(form);
+  }
+}
+     
+     async function createChart () {
+     //fetchJSONData(); to be added back in case
+     setTimeout(() => {
+  
+     new Chart(ctx, {
+       type: 'line',
+       data: {
+         labels: x,
+         datasets: [{
+           label: 'Price in USD',
+           data: closingPrices,
+           borderWidth: 1
+         }]
+       },
+       options: {
+         scales: {
+           y: {
+             beginAtZero: false
+           }
+         }
+       }
+     });
+
+    }, 100);
+     }
+     createChart();
+     
+     </script>
+</body>
+
+<%}%> 
+<%- include("partials/footer.ejs"); %>
+
+  
+</html>
