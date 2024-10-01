@@ -10,8 +10,8 @@
           <div class="col p-4 d-flex flex-column position-static mt-1">
             <h2 class="d-inline-block mb-2 text-dark-emphasis mt-1"><%=posts[i].title %></h2>
             <div class="mb-1 text-body-secondary mb-1 mt-1"><%=posts[i].time %></div>
-            <h3 class="card-text mb-auto mt-auto"><%=posts[i].content %></h3>
-            <strong class="d-inline-block mb-2 mt-2 text-primary-emphasis"><%=posts[i].author %></strong>
+            <h5 class="card-text mb-auto mt-auto" style="font-family: sans-serif; "><%=posts[i].content %></h5>
+            <strong class="d-inline-block mt-2 text-primary-emphasis"><%=posts[i].author %></strong>
        <% if(posts[i].author == author){ %>
           <div class="container" id="containermain">
             <form action="/write/:<%= posts[i].id %>" method="get">
