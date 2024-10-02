@@ -11,7 +11,7 @@
 
 </head>
 
-<header class="d-flex flex-wrap justify-content-center py-3 mb-1 border-bottom" id="gradient-background" >
+<header class="d-flex flex-wrap justify-content-center py-3 mb-0 border-bottom"  >
   <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
     <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
     <span class="fs-4" style="color:white">Investmeter</span>
@@ -24,8 +24,8 @@
     <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
   </ul>
 </header>
-
-<div class="justify-content-end">
+<body id="gradient-background">
+<div class="justify-content-end" style="background-color: white;">
   <div class="row">
     <div class="col-md-6"></div>
     <div class="text-end col-md-6">
@@ -42,14 +42,14 @@
         <form action="/signout" class="mt-1">
           <button  class="btn btn-danger " type="submit">Sign Out</button>
         </form>
+      </div>
         <%}%>
     </div>
-  </div>
-  </div>
+ 
 
-<body>
+  <div class="container" style="background-color: white;">
   <% if (locals.content.length===0){ %>
-<main class="container">
+<main class="container" style="background-color: white;">
 
 
     <div class="container">
@@ -78,20 +78,23 @@
           </h1>
           </div>
         </main>
+      </div>
+    </div>
         
         <%  } else { %>
-
-          <form action="/news/choose" method="POST">
+        
+          <form action="/news/choose" method="POST" style="background-color: white;">
             
             <div class="container mb-5 ">
               <div class="form-floating " id="firstContainer" >
                 <input class="form-control " id="floatingInput" name="stock" type="text"  >
                 <label for="floatingInput" >Search for your desired stock news</label> 
-                <div  >
+                <div >
                   <button class="btn btn-dark py-2 btn-lg my-1" type="submit">Search</button>
                 </div>
               </div>
             </form>
+          </div>
 
    <% if(!locals.stock){ %>
         <h1 class="mt-5 mb-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif;" > Latest news related to AAPL</h1>
@@ -123,7 +126,7 @@
   <%}%>
       <div class="col-md-4">
   
-        <div class="position-sticky" style="top: 2rem;">
+        <div class="position-sticky mb-3" style="top: 2rem; background-color: white;">
             <h4 class="fst-italic">Recent news</h4>
             <ul class="list-unstyled">
               <li>
@@ -163,10 +166,11 @@
       </div>
     </div>
   
-  </main>
-</body>
+  
+
 <% } %>
 <%- include("partials/footer.ejs"); %>
+</body>
 
 </html>
 

@@ -35,7 +35,7 @@
 }
 </style>
 
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-1 border-bottom" id="gradient-background" >
+    <header class="d-flex flex-wrap justify-content-center py-3  border-bottom" >
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
         <span class="fs-4" style="color:white">Investmeter</span>
@@ -51,12 +51,13 @@
       </ul>
     </header>
 
-  <body >
+  <body id="gradient-background" >
+  <div style="background-color:white">
   <div class="container">
     <% if(locals.error || locals.success || locals.errorOriginal || locals.errorsize){ %>
-      <h1 style="text-align: center;" class="mt-5 mb-5 "  >
+      <h1 style="text-align: center;" class="mb-5 "  >
       <%}else{ %>
-        <h1 style="text-align: center;" class="mt-5 mb-5 welcome" id="div" >
+        <h1 style="text-align: center;" class=" mb-5 welcome" id="div" >
       <%}%>
     
       Welcome to Investmeter
@@ -185,12 +186,12 @@
           </div>
         </div>
       </div>
+    </div>
 
-  </body>
 
 
   
 
   <%- include("partials/footer.ejs"); %>
-
+</body>
  

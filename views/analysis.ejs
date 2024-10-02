@@ -10,8 +10,8 @@
   integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 
 </head>
-
-<header class="d-flex flex-wrap justify-content-center py-3 mb-1 border-bottom" id="gradient-background" >
+<body id="gradient-background" >
+<header class="d-flex flex-wrap justify-content-center py-3 mb-0 border-bottom"  >
   <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
     <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
     <span class="fs-4" style="color:white">Investmeter</span>
@@ -24,6 +24,7 @@
     <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
   </ul>
 </header>
+<div class="content" style="background-color: white;">
 <div class="justify-content-end">
 <div class="row">
   <div class="col-md-6"></div>
@@ -42,9 +43,8 @@
     <%}%>
   </div>
 </div>
-</div>
 
-<body>
+
 
   <% if (locals.error){ %>
 <div class="container">
@@ -150,10 +150,10 @@
 
 </div>
 
-</div>
+
 </form>
 
-<div class="container predictions" >
+<div class="container predictions " >
 <p style="align-items: center; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> What to do next: </p> 
   <table class="table table table-sm">
     <thead>
@@ -169,17 +169,17 @@
         <% if(change2>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success" style="width: 50%;" >Buy</button>
+         <button type="button" class="btn btn-success mb-3" style="width: 50%;" >Buy</button>
       
          <%} else if(change2<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger "  style="width: 50%;">Sell</button>
+           <button type="button" class="btn btn-danger mb-3 "  style="width: 50%;">Sell</button>
         
            <%} else { %>
              
               
-            <button type="button" class="btn btn-warning " style="color:whitesmoke; background-color: orange; width: 50%;">Hold</button>
+            <button type="button" class="btn btn-warning mb-3 " style="color:whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
@@ -187,17 +187,17 @@
         <% if(change>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success " style="width: 50%;">Buy</button>
+         <button type="button" class="btn btn-success mb-3" style="width: 50%;">Buy</button>
       
          <%} else if(change<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger " style="width: 50%;" >Sell</button>
+           <button type="button" class="btn btn-danger mb-3 " style="width: 50%;" >Sell</button>
         
            <%} else { %>
              
               
-             <button type="button" class="btn btn-warning " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
+             <button type="button" class="btn btn-warning mb-3 " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
@@ -205,17 +205,17 @@
         <% if(change3>0.75){ %>
           
           <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success " style="width: 50%;">Buy</button>
+         <button type="button" class="btn btn-success mb-3 " style="width: 50%;">Buy</button>
       
          <%} else if(change3<-0.75){ %>
            
          <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger" style="width: 50%;" >Sell</button>
+           <button type="button" class="btn btn-danger mb-3" style="width: 50%;" >Sell</button>
         
            <%} else { %>
              
               
-            <button type="button" class="btn btn-warning w-60 " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
+            <button type="button" class="btn btn-warning w-60 mb-3" style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
           
             <%}%>
       </td>
@@ -226,6 +226,7 @@
   </div>
 
   </div>
+</div>
 
   
     
