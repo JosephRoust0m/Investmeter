@@ -1,7 +1,19 @@
 <%- include("partials/header.ejs"); %>
 
-<body>
-  <div class="container py-4 ziz">
+<div class="justify-content-end" style="background-color: white;">
+  <div class="row">
+    <div class="col-md-6"></div>
+    <div class="text-end col-md-6">
+      <form action="/signout" class="mt-1">
+      <button  class="btn btn-danger " type="submit">Sign Out</button>
+    </form>
+    </div>
+  </div>
+  </div>
+
+<body id="gradient-background">
+  <div style="background-color: white;">
+  <div class="container py-4 ">
         
     <% if (locals.posts){ %>
       <% for (var i=0; i< posts.length; i++){ %>
@@ -27,6 +39,8 @@
    <% } %>
    <% } %>
           </div>
-    </body>
+        </div>
+    
 
     <%- include("partials/footer.ejs"); %>
+  </body>
