@@ -3,8 +3,6 @@ import axios from "axios";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
-//import csv from 'csv-parser';
-
 import pg from "pg";
 import bcrypt from "bcrypt";
 
@@ -30,7 +28,7 @@ const config = {
   headers: { Authorization: `Bearer ${myBearerToken}` },
 };
 
-//const error="An error occured,please try again";
+
 
 app.use(
   session({
@@ -118,8 +116,8 @@ app.get("/", async (req, res) => {
 
   try{
         const response = await axios.get(API_URL +`/v2/aggs/ticker/AAPL/range/1/day/${year1}-${month1}-${day1}/${year}-${month}-${day}?adjusted=true&sort=asc`,config);
-        const length= response.data["results"].length;
         const info=response.data["results"];
+        const length= info.length;
         const count=response.data["resultsCount"];
         const open=response.data["results"][length-1]["o"];
         const volume=response.data["results"][length-1]["v"];
@@ -128,11 +126,11 @@ app.get("/", async (req, res) => {
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
         //const close1=response.data["results"][length-2]["c"];
-        var change3= await advice("AAPL",10); //short term
-        var change= await advice("AAPL",50); //mid term
-        var change2= await advice("AAPL",365);//long term
+        const biWeekly= await advice("AAPL",10); //short term
+        const fifty= await advice("AAPL",50); //mid term
+        const yearly= await advice("AAPL",365);//long term
         
-        console.log("change 10 days is "+change3+" "+"change 50 days is "+change+" "+"change 365 days is "+change2+" ");
+        console.log("change 10 days is "+biWeekly+" "+"change 50 days is "+fifty+" "+"change 365 days is "+yearly+" ");
 //var json = JSON.stringify(obj);
 
 for(var i=0; i<info.length;i++) {
@@ -159,9 +157,9 @@ else{
           vw:volumeWeighted,
           high:high,
           low:low,
-          change:change,
-          change2: change2,
-          change3:change3,
+          BiWeekly:biWeekly,
+          Fifty: fifty,
+          Yearly:yearly,
           loggedin:req.isAuthenticated(),
           prices:prices,
           number:90
@@ -240,8 +238,8 @@ else{
   
     try{
           const response = await axios.get(API_URL +`/v2/aggs/ticker/${stockInUse}/range/1/day/${year1}-${month1}-${day1}/${year}-${month}-${day}?adjusted=true&sort=asc`,config);
-          const length= response.data["results"].length;
           const info=response.data["results"];
+          const length= info.length;
           const count=response.data["resultsCount"];
           const open=response.data["results"][length-1]["o"];
           const volume=response.data["results"][length-1]["v"];
@@ -250,9 +248,9 @@ else{
           const high=response.data["results"][length-1]["h"];
           const close=response.data["results"][length-1]["c"];
           //const close1=response.data["results"][length-2]["c"];
-          var change= await advice(stockInUse,50); //mid term
-          var change2=await advice(stockInUse,365);//long term
-          var change3=await advice(stockInUse,10); //short term
+          const fifty= await advice(stockInUse,50); //mid term
+          const yearly=await advice(stockInUse,365);//long term
+          const biWeekly=await advice(stockInUse,10); //short term
   //var json = JSON.stringify(obj);
   
   for(var i=0; i<info.length;i++) {
@@ -278,9 +276,9 @@ else{
             vw:volumeWeighted,
             high:high,
             low:low,
-            change:change,
-            change2: change2,
-            change3:change3,
+            BiWeekly:biWeekly,
+            Fifty: fifty,
+            Yearly:yearly,
             loggedin:req.isAuthenticated(),
             prices:prices,
             period:periodSentence,
@@ -356,10 +354,10 @@ console.log("The name of the stock is "+stockname);
         const low=response.data["results"][length-1]["l"];
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
-        const close1=response.data["results"][length-2]["c"];
-        var change= await advice(stockname,50);
-        var change2= await advice(stockname,365);
-        var change3= await advice(stockname,10);
+        //const close1=response.data["results"][length-2]["c"];
+        const fifty= await advice(stockname,50);
+        const yearly= await advice(stockname,365);
+        const biWeekly= await advice(stockname,10);
         //console.log("change is "+change);
        
 //var json = JSON.stringify(obj);
@@ -384,9 +382,9 @@ else{
           vw:volumeWeighted,
           high:high,
           low:low,
-          change:change,
-          change2: change2,
-          change3:change3,
+          BiWeekly:biWeekly,
+          Fifty: fifty,
+          Yearly:yearly,
           loggedin:req.isAuthenticated(),
           prices:prices,
           number:90
@@ -520,7 +518,7 @@ else{
       });
 
 
-        app.get("/blog", async (req, res) => {
+      app.get("/blog", async (req, res) => {
          
           if(req.isAuthenticated()){
            // if(start==true){
@@ -547,7 +545,7 @@ else{
           }
         });
 
-        app.get("/write", async(req, res) => {
+      app.get("/write", async(req, res) => {
           
           if(req.isAuthenticated()){
             res.render(__dirname + "/views/write.ejs");
@@ -558,7 +556,7 @@ else{
             }
         });
         
-        app.post("/write", async (req, res) => {
+      app.post("/write", async (req, res) => {
   
           var txt= req.body.text;
           var subj= req.body.subject;
@@ -590,7 +588,7 @@ else{
         
         
         //delete
-        app.post('/blog/:myVariable', (req,res) =>{
+      app.post('/blog/:myVariable', (req,res) =>{
           var id=req.params.myVariable;
           var formId=0;
           var charArr=id.split(":");
@@ -623,7 +621,7 @@ else{
         update
         */
         
-        app.get('/write/:myVariable', async (req,res) =>{
+      app.get('/write/:myVariable', async (req,res) =>{
         var id=req.params.myVariable;
         console.log(id);
       var charArr=id.split(":");
@@ -643,7 +641,7 @@ else{
 
         
         
-          app.post('/write/:myVariable', (req, res) => {
+      app.post('/write/:myVariable', (req, res) => {
             //var formId=0;
             var formId2= req.params.myVariable;
     if(req.body.text.length>0 && req.body.subject.length>0) {
@@ -685,8 +683,8 @@ else{
   
 
             //sigup
-            app.post("/signup", async (req,res) =>{
-              var pass= req.body.password;
+    app.post("/signup", async (req,res) =>{
+    var pass= req.body.password;
      
       var eml=req.body.email;
       var username=req.body.username;
@@ -779,6 +777,13 @@ else{
         
         }
 
+        /**
+         * 
+         * @param {*} stockname 
+         * @param {*} period 
+         * @returns advice
+         * function to determine the advice to give to users for each investment period
+         */
     async function advice(stockname,period){
     
       var leniency= 0;
@@ -977,6 +982,9 @@ else{
           
         }
 
+        /**
+         * Authentification related methods
+         */
         app.post("/signin/check", passport.authenticate("local",{
           successRedirect:"/blog",
           failureRedirect:"/failedlogin",
@@ -1018,6 +1026,9 @@ else{
            })
          );
          
+        /**
+        * Authentification related methods
+        */
          
          passport.serializeUser((user, cb) => {
            cb(null, user);
