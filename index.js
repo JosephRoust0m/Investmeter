@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
-import {Sequelize} from "sequelize";
+//import {Sequelize} from "sequelize";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
@@ -23,7 +23,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
-const myBearerToken = key;
+const myBearerToken = process.env.key;
 const config = {
   headers: { Authorization: `Bearer ${myBearerToken}` },
 };
@@ -32,7 +32,7 @@ const config = {
 
 app.use(
   session({
-    secret:secret,
+    secret:process.env.secret,
     resave: false,
     saveUninitialized: true , //store session into server memory
     cookie:{
@@ -49,7 +49,7 @@ const db = new pg.Client({
   user: "investmeter_user",
   host: "dpg-cs2anee8ii6s739el020-a.oregon-postgres.render.com",
   database: "investmeter",
-  password: password,
+  password: process.env.password,
   port: 5432,
   ssl: {
     rejectUnauthorized: false // This is for development, set to true in production
