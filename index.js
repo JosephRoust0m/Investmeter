@@ -9,7 +9,7 @@ import {Sequelize} from "sequelize";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import key,{password,secret,host} from "./config.js";
+import key,{password,secret} from "./config.js";
 
 
 const app = express();
@@ -47,7 +47,7 @@ app.use(passport.session());
 
 const db = new pg.Client({
   user: "investmeter_user",
-  host: host,
+  host: "dpg-cs2anee8ii6s739el020-a.oregon-postgres.render.com",
   database: "investmeter",
   password: password,
   port: 5432,
