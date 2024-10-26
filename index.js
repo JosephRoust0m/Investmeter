@@ -9,7 +9,7 @@ import bcrypt from "bcrypt";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import key,{password,secret} from "./config.js";
+//import key,{password,secret} from "./config.js";
 
 
 const app = express();
