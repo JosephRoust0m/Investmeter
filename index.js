@@ -5,15 +5,15 @@ import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
-
+import {Sequelize} from "sequelize";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import key,{password,secret} from "./config.js";
+import key,{password,secret,host} from "./config.js";
 
 
 const app = express();
-const port = 3000;
+const port = 10000 || 3000;
 const saltRounds=10;
 
 
@@ -44,15 +44,40 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "Investmeter",
+  user: "investmeter_user",
+  host: host,
+  database: "investmeter",
   password: password,
   port: 5432,
+  ssl: {
+    rejectUnauthorized: false // This is for development, set to true in production
+  }
 });
-db.connect(); 
 
+db.connect();
+
+/*
+const db = new Sequelize(DB_URL,{
+  dialect: "postgres",
+  logging:false,
+  dialectOptions: {
+  ssl:{
+  require:true,
+  rejectUnauthorized:false,
+  },
+  },
+  });
+  db
+  .sync()
+  .then( () =>{
+  console.log("data base connected");
+  })
+  .catch( (err) =>{
+  console.log(err);
+  });
+*/
 
 var  posts=[];
 var start=true;
@@ -687,6 +712,7 @@ else{
     var pass= req.body.password;
      
       var eml=req.body.email;
+      eml=eml.toLowerCase();
       var username=req.body.username;
       var taken=false;
       var error= "Username/email are already taken";
@@ -715,10 +741,14 @@ else{
             } 
             else{
               var success="Success";
+              
               const result= await db.query(
                 "INSERT INTO users (email,password,account_name) VALUES ($1,$2,$3) RETURNING *",
                 [`${eml}`,`${hash}`,`${username}`]
               );
+              
+             
+              
               const user = result.rows[0];
             req.login(user, (err) => {
             //console.log("success");
@@ -995,11 +1025,11 @@ else{
              try {
                const emailToPass="'"+username+"'";
               // console.log(emailToPass);
-               const result = await db.query(`SELECT * FROM users where email=${emailToPass} `);
+               const result = await db.query(`SELECT * FROM users where email=${emailToPass.toLowerCase()} `);
                const user= await result.rows[0];
               // console.log(user);
                //const pass=result.rows[0].password;
-               var checkemail= await checkEmailPresence(username);
+               var checkemail= await checkEmailPresence(username.toLowerCase());
                if(checkemail==true){
                  const pass=result.rows[0].password;
                  bcrypt.compare(password, pass, (err, bool) => {
