@@ -46,38 +46,19 @@ app.use(passport.session());
 
 
 const db = new pg.Client({
-  user: "investmeter_user",
-  host: "dpg-cs2anee8ii6s739el020-a.oregon-postgres.render.com",
-  database: "investmeter",
+  user: "investmeter_iidv_user",
+  host: "dpg-csm46aogph6c73aci6ug-a.oregon-postgres.render.com",
+  database: "investmeter_iidv",
   password: process.env.password,
   port: 5432,
   ssl: {
-    rejectUnauthorized: false // This is for development, set to true in production
+    rejectUnauthorized: false 
   }
 });
 
 db.connect();
 
-/*
-const db = new Sequelize(DB_URL,{
-  dialect: "postgres",
-  logging:false,
-  dialectOptions: {
-  ssl:{
-  require:true,
-  rejectUnauthorized:false,
-  },
-  },
-  });
-  db
-  .sync()
-  .then( () =>{
-  console.log("data base connected");
-  })
-  .catch( (err) =>{
-  console.log(err);
-  });
-*/
+
 
 var  posts=[];
 var start=true;
