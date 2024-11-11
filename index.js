@@ -688,12 +688,10 @@ else{
     }); 
   
 
-            //sigup
-    app.post("/signup", async (req,res) =>{
+     app.post("/signup", async (req,res) =>{
     var pass= req.body.password;
      
       var eml=req.body.email;
-      eml=eml.toLowerCase();
       var username=req.body.username;
       var taken=false;
       var error= "Username/email are already taken";
@@ -722,21 +720,17 @@ else{
             } 
             else{
               var success="Success";
-              
               const result= await db.query(
                 "INSERT INTO users (email,password,account_name) VALUES ($1,$2,$3) RETURNING *",
                 [`${eml}`,`${hash}`,`${username}`]
               );
-              
-             
-              
               const user = result.rows[0];
-            req.login(user, (err) => {
+          
             //console.log("success");
             res.render("signin.ejs", {
               success:success
              });
-          });
+         
              
           }
           })
