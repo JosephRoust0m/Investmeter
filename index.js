@@ -46,9 +46,9 @@ app.use(passport.session());
 
 
 const db = new pg.Client({
-  user: "investmeter_txvc_user",
-  host: "dpg-cu2el09opnds738j31f0-a.oregon-postgres.render.com",
-  database: "investmeter_txvc",
+  user: "investmeter_lf4c_user",
+  host: "dpg-cum23mqn91rc739p88lg-a.oregon-postgres.render.com",
+  database: "investmeter_lf4c",
   password: process.env.password,
   port: 5432,
   ssl: {
