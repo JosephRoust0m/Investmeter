@@ -10,6 +10,7 @@
   integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 
 </head>
+
 <body id="gradient-background" >
 <header class="d-flex flex-wrap justify-content-center py-3 mb-0 border-bottom"  >
   <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -20,7 +21,7 @@
   <ul class="nav nav-pills">
     <li class="nav-item"><a href="/" class="nav-link" id="one" style="color:white">Stocks Data</a></li>
     <li class="nav-item"><a href="/news" class="nav-link" id="one" style="color:white">News</a></li>
-    <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Posts</a></li>
+    <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Feed</a></li>
     <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
   </ul>
 </header>
@@ -154,13 +155,13 @@
 </form>
 
 <div class="container predictions " >
-<p style="align-items: center; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> What to do next: </p> 
+<p style="align-items: center; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> Your Next Move: </p> 
   <table class="table table table-sm">
     <thead>
       <tr>
-        <th scope="col">Position For The Next 10 Days : </th>
-        <th scope="col">Position For The Next 50 Days :</th>
-        <th scope="col">Position For The Next Year :</th>
+        <th scope="col"> For The Next 2 Weeks : </th>
+        <th scope="col"> For The Next 50 Days :</th>
+        <th scope="col"> For The Next Year :</th>
       </tr>
     </thead>
     <tbody>
@@ -265,7 +266,7 @@ for (var d = now; d <=nownow; d.setDate(d.getDate() + 1)) {
 var form = month+"/"+day;
   if(new Date(d).getDay()!==6 && new Date(d).getDay()!==0 && (form!=="09/02")&&(form!=="11/28")
   &&(form!=="12/25") &&(form !=="1/1") &&(form!=="1/20")&&(form!=="2/17") &&(form!=="4/18")
-  &&(form!=="5/27") &&(form!=="7/4" &&(form!=="6/19")&&(form !=="1/9"))){
+  &&(form!=="5/27") &&(form!=="7/4" &&(form!=="6/19"))){
 
     x.push(form);
   }

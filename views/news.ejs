@@ -20,7 +20,7 @@
   <ul class="nav nav-pills">
     <li class="nav-item"><a href="/" class="nav-link" id="one" style="color:white">Stocks Data</a></li>
     <li class="nav-item"><a href="/news" class="nav-link" id="one" style="color:white">News</a></li>
-    <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Posts</a></li>
+    <li class="nav-item"><a href="/blog" class="nav-link" id="one" style="color:white">Feed</a></li>
     <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
   </ul>
 </header>
@@ -97,70 +97,33 @@
           </div>
 
    <% if(!locals.stock){ %>
-        <h1 class="mt-5 mb-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif;" > Latest news related to AAPL</h1>
+        <h1 class="mt-5 mb-5 text-center" style="font-family: Verdana, Geneva, Tahoma, sans-serif;" > Latest news related to AAPL</h1>
    <% }else { %>
-    <h1 class="mb-5 mt-5" style="font-family: Verdana, Geneva, Tahoma, sans-serif;"> Latest news related to <%=stock%></h1>
+    <h1 class="mb-5 mt-5 text-center" style="font-family: Verdana, Geneva, Tahoma, sans-serif;"> Latest news related to <%=stock%></h1>
     <%} %>
     <div class="row g-5">
     <% for (var i=0; i<title.length;i++){ %>
-    <%if(i==title.length-1) {%>
-      <div class="col-md-8">
-       <%} else { %>
-        <div class="col-md-12">
-    <%}%>
-        <div class="row mb-2">
-            <div >
-              <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                  <strong class="d-inline-block mb-2 text-primary-emphasis"><%=publisher[i] %></strong>
-                  <h3 class="mb-0"><%=title[i] %></h3>
-                  <div class="mb-1 text-body-secondary"><%=time[i] %></div>
-                  <img src='<%=image[i]%>' height="250" class="w-50">
-                  <p class="card-text mb-auto"><%=content[i] %></p>
-                  <strong class="d-inline-block mb-2 text-primary-emphasis"><%=author[i] %></strong>
-                </div>
+      <div class="d-flex justify-content-center">
+        <div class="col-md-8">
+          <div class="news-block zoom-effect">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary"><%=publisher[i] %></strong>
+                <h3 class="mb-0 text-dark"><%=title[i] %></h3>
+                <div class="mb-1 text-muted"><%=time[i] %></div>
+                <img src='<%=image[i]%>' height="250" width=100% class="img-fluid my-3 w-100">
+                <p class="card-text mb-auto"><%=content[i] %></p>
+                <a href="<%=url[i] %>" class="stretched-link text-primary-emphasis">Read more</a>
+                <strong class="d-inline-block mt-3 text-secondary"><%=author[i] %></strong>
               </div>
             </div>
           </div>
-          </div>
+        </div>
+      </div>
+      
+          
   <%}%>
-      <div class="col-md-4">
-  
-        <div class="position-sticky mb-3" style="top: 2rem; background-color: white;">
-            <h4 class="fst-italic">Recent news</h4>
-            <ul class="list-unstyled">
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="<%=url[0]%>">
-                  <img class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" src="<%=image[0]%>"><rect width="100%" height="100%" fill="#777"></rect>
-                  <div class="col-lg-8">
-                    <h5 class="mb-0"><%=title[0]%></h5>
-                    <h6 class="mb-0"><%=publisher[0]%></h6>
-                    <small class="text-body-secondary"><%=time[0]%></small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="<%=url[1]%>">
-                  <img class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" src="<%=image[1]%>"><rect width="100%" height="100%" fill="#777"></rect>
-                  <div class="col-lg-8">
-                    <h5 class="mb-0"><%=title[1]%></h5>
-                    <h6 class="mb-0"><%=publisher[1]%></h6>
-                    <small class="text-body-secondary"><%=time[1]%></small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top" href="<%=url[2]%>">
-                  <img class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" src="<%=image[2]%>"><rect width="100%" height="100%" fill="#777"></rect>
-                  <div class="col-lg-8">
-                    <h5 class="mb-0"> <%=title[2]%></h5>
-                    <h6 class="mb-0"><%=publisher[2]%></h6>
-                    <small class="text-body-secondary"><%=time[2]%></small>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+      
         </div>
         </div>
       </div>
@@ -174,4 +137,42 @@
 
 </html>
 
+<style>
+  .news-block {
+    margin-bottom: 20px;
+  }
+  .news-block .border {
+    border-color: #ccc !important;
+  }
+  .news-block .text-primary {
+    color: #007bff !important;
+  }
+  .news-block .text-muted {
+    color: #6c757d !important;
+    margin-bottom: 10px;
+  }
+  .news-block .text-dark {
+    color: #343a40 !important;
+  }
+  .news-block .text-secondary {
+    color: #6c757d !important;
+  }
+  .news-block h3 {
+    margin-bottom: 15px;
+  }
+  .news-block img {
+    object-fit: cover;
+    margin-bottom: 15px;
+  }
+  .news-block .card-text {
+    font-size: 1rem;
+  }
+  .news-block .stretched-link {
+    color: #007bff !important;
+    text-decoration: none;
+  }
+  .news-block .stretched-link:hover {
+    text-decoration: underline;
+  }
+</style>
 

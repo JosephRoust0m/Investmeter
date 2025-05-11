@@ -5,15 +5,15 @@ import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
-//import {Sequelize} from "sequelize";
+
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
-//import key,{password,secret} from "./config.js";
+import key,{password,secret} from "./config.js";
 
 
 const app = express();
-const port = 10000 || 3000;
+const port = 3000;
 const saltRounds=10;
 
 
@@ -23,7 +23,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
-const myBearerToken = process.env.key;
+const myBearerToken = key;
 const config = {
   headers: { Authorization: `Bearer ${myBearerToken}` },
 };
@@ -32,9 +32,9 @@ const config = {
 
 app.use(
   session({
-    secret:process.env.secret,
+    secret:secret,
     resave: false,
-    saveUninitialized: true , //store session into server memory
+    saveUninitialized: true ,
     cookie:{
       maxAge:1000*60*60*24
     }
@@ -44,20 +44,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 const db = new pg.Client({
-  user: "investmeter_lf4c_user",
-  host: "dpg-cum23mqn91rc739p88lg-a.oregon-postgres.render.com",
-  database: "investmeter_lf4c",
-  password: process.env.password,
+  user: "postgres",
+  host: "localhost",
+  database: "Investmeter",
+  password: password,
   port: 5432,
-  ssl: {
-    rejectUnauthorized: false 
-  }
 });
-
-db.connect();
-
+db.connect(); 
 
 
 var  posts=[];
@@ -92,10 +86,10 @@ app.get("/", async (req, res) => {
     name = 'AAPL'
      where id= 1 `
   );
-  //console.log("its autheticated "+req.isAuthenticated());
+
   var start= new Date();
   start.setDate(date.getDate()-90);
-  //console.log("stock in use is "+stockInUse);
+
   var day1= start.getDate();
   var month1= start.getMonth();
   month1++;
@@ -131,30 +125,25 @@ app.get("/", async (req, res) => {
         const low=response.data["results"][length-1]["l"];
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
-        //const close1=response.data["results"][length-2]["c"];
-        const biWeekly= await advice("AAPL",10); //short term
-        const fifty= await advice("AAPL",50); //mid term
-        const yearly= await advice("AAPL",365);//long term
+
+        const biWeekly= await advice("AAPL",10); 
+        const fifty= await advice("AAPL",50); 
+        const yearly= await advice("AAPL",365);
         
         console.log("change 10 days is "+biWeekly+" "+"change 50 days is "+fifty+" "+"change 365 days is "+yearly+" ");
-//var json = JSON.stringify(obj);
+
 
 for(var i=0; i<info.length;i++) {
-  /*
-  var obj= {
-   price: info[i]["c"],
-  }
-   */
+
   if(i!==info.length-1){
 prices=prices+ info[i]["c"]+",";
   }
+  
 else{
   prices=prices+ info[i]["c"];
 }
-  
           
         }
-       // console.log(prices);
         res.render("analysis.ejs", {
           count:count,
           open:open,
@@ -186,6 +175,7 @@ else{
     var stockEdit2=stockEdit.rows[0];
     var stockInUse=stockEdit2.name;
     console.log("the current stock is "+stockInUse);
+
     var prices="";
     var periodSentence="";
     var date= new Date();
@@ -226,8 +216,6 @@ else{
     var month= date.getMonth();
     month++;
     var year= date.getFullYear();
-    //console.log(day+" "+month +" "+year);
-    //console.log(day1+" "+month1 +" "+year1);
   
     if(day<10){
       day="0"+day;
@@ -253,27 +241,22 @@ else{
           const low=response.data["results"][length-1]["l"];
           const high=response.data["results"][length-1]["h"];
           const close=response.data["results"][length-1]["c"];
-          //const close1=response.data["results"][length-2]["c"];
-          const fifty= await advice(stockInUse,50); //mid term
-          const yearly=await advice(stockInUse,365);//long term
-          const biWeekly=await advice(stockInUse,10); //short term
-  //var json = JSON.stringify(obj);
+
+          const fifty= await advice(stockInUse,50); 
+          const yearly=await advice(stockInUse,365);
+          const biWeekly=await advice(stockInUse,10); 
   
   for(var i=0; i<info.length;i++) {
-    /*
-    var obj= {
-     price: info[i]["c"],
-    }
-     */
+
     if(i!==info.length-1){
   prices=prices+ info[i]["c"]+",";
     }
+
   else{
     prices=prices+ info[i]["c"];
   }
             
           }
-         // console.log(prices);
           res.render("analysis.ejs", {
             count:count,
             open:open,
@@ -306,22 +289,24 @@ else{
 
   app.post("/choose", async (req, res) => {
   var prices="";
-    var date= new Date();
-  //console.log(date);
+  var date= new Date();
   var start= new Date();
+
   start.setDate(date.getDate()-90);
 
   var day1= start.getDate();
   var month1= start.getMonth();
+
   month1++;
+
   var year1= start.getFullYear();
 
   var day= date.getDate();
   var month= date.getMonth();
+
   month++;
+
   var year= date.getFullYear();
-  //console.log(day+" "+month +" "+year);
-  //console.log(day1+" "+month1 +" "+year1);
 
   if(day<10){
     day="0"+day;
@@ -335,7 +320,7 @@ else{
   if(month1<10){
     month1="0"+month1;
   }
-  //console.log("I am here before the try");
+
   var stockname= req.body.stock;
   stockname=stockname.toUpperCase();
 console.log("The name of the stock is "+stockname);
@@ -345,12 +330,12 @@ console.log("The name of the stock is "+stockname);
      where id= 1 `
   );
 
-  //stockInUse=stockname;
+
   try{
     
-    //console.log(typeof(stockname));
+
         const response = await axios.get(API_URL +`/v2/aggs/ticker/${stockname}/range/1/day/${year1}-${month1}-${day1}/${year}-${month}-${day}?adjusted=true&sort=asc`,config);
-        //const length= response.data["results"].length;
+
         const info=response.data["results"];
         console.log("I am here inside the try");
         const length=response.data["resultsCount"];
@@ -360,13 +345,13 @@ console.log("The name of the stock is "+stockname);
         const low=response.data["results"][length-1]["l"];
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
-        //const close1=response.data["results"][length-2]["c"];
+
         const fifty= await advice(stockname,50);
         const yearly= await advice(stockname,365);
         const biWeekly= await advice(stockname,10);
-        //console.log("change is "+change);
+
        
-//var json = JSON.stringify(obj);
+
 
 for(var i=0; i<info.length;i++) {
   if(i!==info.length-1){
@@ -379,7 +364,7 @@ else{
 
           
         }
-       // console.log(prices);
+
         res.render("analysis.ejs", {
           stock:stockname,
           open:open,
@@ -394,6 +379,7 @@ else{
           loggedin:req.isAuthenticated(),
           prices:prices,
           number:90
+
          });
         
     
@@ -419,9 +405,9 @@ else{
 
     try{
           const response = await axios.get(API_URL +`/v2/reference/news?ticker=AAPL&order=desc&limit=40`,config);
-          //const length= response.data["results"].length;
+
           const info=response.data["results"];
-  //var json = JSON.stringify(obj);
+
   
   for(var i=0; i<info.length;i++) {
     var slicedTime= info[i]["published_utc"].split("T");
@@ -445,20 +431,18 @@ else{
             url:url,
             loggedin:req.isAuthenticated()
            });
-          
-      
+               
     } 
   
         catch (error) {
           console.log(error.message);
       }
-         
-
+        
   
     });
 
     app.post("/news/choose", async (req, res) => {
-      //var loggedin=await statusCheck();
+
       var content=[];
       var image=[];
       var author=[];
@@ -468,11 +452,12 @@ else{
       var url=[];
       var stockname=req.body.stock;
       stockname= stockname.toUpperCase();
+
       try{
             const response = await axios.get(API_URL +`/v2/reference/news?ticker=${stockname}&order=desc&limit=40`,config);
-            //const length= response.data["results"].length;
+
             const info=response.data["results"];
-    //var json = JSON.stringify(obj);
+;
     
     for(var i=0; i<info.length;i++) {
       var slicedTime= info[i]["published_utc"].split("T");
@@ -527,25 +512,16 @@ else{
       app.get("/blog", async (req, res) => {
          
           if(req.isAuthenticated()){
-           // if(start==true){
+
             var postsInternal= await getPosts();
             start=false;
-            //console.log(posts);
+
             res.render("blog.ejs", {
               posts:postsInternal,
               author: req.user.account_name
              });
             }
-            /*
-            else{
-              res.render("blog.ejs", {
-                posts:posts,
-                author: req.user.account_name
-              });
-            }
-            
-          }
-          */
+
           else{
             res.render(__dirname + "/views/signin.ejs");
           }
@@ -572,18 +548,7 @@ else{
             "INSERT INTO posts (author,time,content,title) VALUES ($1, $2,$3,$4)",
             [`${req.user.account_name}`,`${time}`,`${txt}`,`${subj}`]
           );
-          /*
-          const ids = await db.query(`SELECT id FROM posts`);
-          var id= ids.rows[ids.rowCount-1].id;
-          posts.push(
-            {author : req.user.account_name,
-                          time:time,
-                          content:txt,
-                          title:subj,
-                          id:id
-              }
-          )
-          */
+
           res.redirect("/blog");
         }
         else{
@@ -593,7 +558,7 @@ else{
           }); 
         
         
-        //delete
+      
       app.post('/blog/:myVariable', (req,res) =>{
           var id=req.params.myVariable;
           var formId=0;
@@ -605,13 +570,7 @@ else{
           db.query(
             `Delete from posts where id=${form};`
           );
-          /*
-        for (var i=0; i<posts.length;i++){
-          if(posts[i]["id"]==form){
-        posts.splice(i,1);
-          }
-        }
-        */
+
         res.redirect("/blog");
         }
         catch(err){
@@ -619,13 +578,10 @@ else{
           console.log(err.stack);
         }
         
-        //console.log("I am in deleting a post");
           
         });
         
-        /*
-        update
-        */
+
         
       app.get('/write/:myVariable', async (req,res) =>{
         var id=req.params.myVariable;
@@ -636,7 +592,7 @@ else{
       console.log(form);
       var userEdit =  await db.query(`SELECT * FROM posts where id=${form}; `);
       var userEdit2=userEdit.rows[0];
-      //console.log("form: " +userEdit.rows[0].title);
+
           res.render("write.ejs", {
             cont: userEdit2.content,
             title: userEdit2.title,
@@ -648,8 +604,8 @@ else{
         
         
       app.post('/write/:myVariable', (req, res) => {
-            //var formId=0;
-            var formId2= req.params.myVariable;
+
+    var formId2= req.params.myVariable;
     if(req.body.text.length>0 && req.body.subject.length>0) {
     var txt= "'"+req.body.text+"'";
     var subj= "'"+req.body.subject+"'";
@@ -665,16 +621,7 @@ else{
        time = ${time}
        where id=${formId} `
     );
-    /*
-    for (var i=0; i<posts.length;i++){
-      if(posts[i]["id"]==formId){
-    posts[i].content=req.body.text;
-    posts[i].title=req.body.subject;
-    posts[i].time=realTime;
 
-      }
-    }
-      */
     res.redirect("/blog");
   } 
   catch(err){
@@ -688,28 +635,40 @@ else{
     }); 
   
 
-     app.post("/signup", async (req,res) =>{
+    app.post("/signup", async (req,res) =>{
     var pass= req.body.password;
-     
+     var pass2=req.body.password2;
       var eml=req.body.email;
       var username=req.body.username;
       var taken=false;
       var error= "Username/email are already taken";
       var error2= "Your password is less than 10 characters";
-      
+      var error3="Your Username/email can not be empty";
+      var error4="Your passwords don't match";
       taken =await checkUserCredentials(eml,username);
-
+      
       setTimeout(async() => {
        console.log(taken);
+       
         if(taken==true){
           res.render("signin.ejs", {
             errorOriginal:error
            });
         }
        else if(pass.length<10){
-          //taken=true;
+
           res.render("signin.ejs", {
             errorsize:error2
+           });
+        }
+        else if (username.length==0 || eml.length==0){
+          res.render("signin.ejs", {
+            errorsize:error3
+           });
+        }
+        else if (pass!=pass2){
+          res.render("signin.ejs", {
+            errorsize:error4
            });
         }
         else{
@@ -725,12 +684,11 @@ else{
                 [`${eml}`,`${hash}`,`${username}`]
               );
               const user = result.rows[0];
-          
-            //console.log("success");
+
             res.render("signin.ejs", {
               success:success
              });
-         
+
              
           }
           })
@@ -744,22 +702,23 @@ else{
 
     app.get("/signout", (req, res) => {
       req.logout(function (err) {
-        //console.log("I logged out");
+
         if (err) {
           return next(err);
         }
         else{
         res.redirect("/signin");
         }
+
       });
+
     });
         
         async function checkUserCredentials(eml,username){
           const usersInfo =  await db.query("SELECT * FROM users");
-          //console.log(eml+" "+username);
-        
+      
          for(var i=0; i< usersInfo.rowCount;i++){
-          //console.log(eml+" "+username);
+
             if(usersInfo.rows[i].email==eml || usersInfo.rows[i].account_name==username ){
               return true;
             }
@@ -772,8 +731,8 @@ else{
           const usersInfo =  await db.query("SELECT * FROM users");
         
          for(var i=0; i< usersInfo.rowCount;i++){
-          //console.log(eml);
-            if(usersInfo.rows[i].email==eml ){
+
+          if(usersInfo.rows[i].email==eml ){
               return true;
             }
           }
@@ -787,8 +746,9 @@ else{
          * @param {*} stockname 
          * @param {*} period 
          * @returns advice
-         * function to determine the advice to give to users for each investment period
+         * helper function to determine the advice to give to users for each investment period
          */
+
     async function advice(stockname,period){
     
       var leniency= 0;
@@ -800,8 +760,6 @@ else{
         leniency=1;
       }
 
-
-        //const stockname="WBD";
     var prices=[];
     var news=[];
     var averageGrowth=0;
@@ -810,11 +768,9 @@ else{
     var positiveScore=0;
     var negativescore=0;
     var neutralScore=0;
-
-    //var prices="";
     var date= new Date();
-    //console.log("its autheticated "+req.isAuthenticated());
     var start= new Date();
+
     start.setDate(date.getDate()-period);
   
     var day1= start.getDate();
@@ -836,12 +792,15 @@ else{
     if(day<10){
       day="0"+day;
     }
+
     if(day1<10){
       day1="0"+day1;
     }
+
     if(month<10){
       month="0"+month;
     }
+
     if(month1<10){
       month1="0"+month1;
     }
@@ -851,12 +810,11 @@ else{
           const response2 = await axios.get(API_URL +`/v2/reference/news?ticker=${stockname}&order=desc&limit=100`,config);
           const data= response.data["results"];
           const data2= response2.data["results"];
-         // console.log(data.length);
+
           for (var i= 0;i<data.length-1;i++){
             var var1 = parseFloat(data[i]["c"]);
             var var2 = parseFloat(data[i+1]["c"]);
             var toadd= (var2-var1)/var1;
-            //console.log("change rate is "+toadd);
             prices.push(toadd);
           }
 
@@ -869,35 +827,29 @@ else{
           
           if(period !==0){
           for (var i=0;i<period;i++){
-            //var check= data2.toString();
-           // console.log(typeof(data2[i]["insights"]));
-           //console.log( typeof(data2[i]["insights"])=="undefined");
+
           try {
             if(typeof(data2[i]["insights"])=="object") {
             var var1=data2[i]["insights"];
-            //console.log(typeof(var1));
-           // console.log("there is an insight "+i);
+
             for (var j= 0;j<var1.length;j++){
-              //console.log("there are "+var1.length+" insights");
-              //console.log("insights are "+var1[i]["ticker"]);
+
                 if(var1[j]["ticker"]==`${stockname}`) {
                 
                     var toadd = var1[j]["sentiment"];
                     news.push(toadd);
                 }
             }
+
             }
             
           }
           catch(err){
             console.log(err);
-            //console.log(err.stack);
+
           }
         }
           
-         // console.log(news);
-
-//console.log("average prices change is "+averageGrowth*100);
           for (var i= 0;i<news.length;i++){
             if(news[i]=="positive"){
                 positiveScore++;
@@ -913,17 +865,16 @@ else{
         }
         else{
           neutralScore++;
-        }
-            
+        }    
           }
+
           if(positiveScore===negativescore){
             averageNews=0;
           }
           else{
           var keep=Math.max(positiveScore,neutralScore,negativescore);
-          //console.log(keep);
           var tokeep=Math.floor((keep/news.length)*100);
-          //console.log(tokeep);
+
         if (tokeep >25 && tokeep<=50){
              if(keep===positiveScore){
               averageNews=1/3;
@@ -946,6 +897,7 @@ else{
             }
         }
         else if (tokeep>50 && tokeep<=75){
+
           if(keep===positiveScore){
             averageNews=2/3;
           }
@@ -958,12 +910,15 @@ else{
       }
 
     else{
+      
       if(keep===positiveScore){
         averageNews=1;
       }
+
       else if(keep===negativescore) {
             averageNews=-1;
       }
+
       else{
           averageNews=0;
       }
@@ -971,10 +926,7 @@ else{
   }
 }
 
-    //console.log(averageNews/2 +" "+averageGrowth+" "+prices.length);
-    //averageGrowth=Math.floor(averageGrowth*100);
           averageScore=(averageGrowth*100)+averageNews/2;
-          //averageScore=parseInt(averageScore+0.5);
           console.log("average score is "+averageScore);
         return averageScore + averageScore*(leniency/2);
 
@@ -988,26 +940,25 @@ else{
         }
 
         /**
-         * Authentification related methods
+         * Authentication related methods
          */
+        
         app.post("/signin/check", passport.authenticate("local",{
           successRedirect:"/blog",
           failureRedirect:"/failedlogin",
          }));
          
          passport.use(new Strategy(async function verify(username,password, cb) {
-             //console.log("i am here");
              try {
                const emailToPass="'"+username+"'";
-              // console.log(emailToPass);
-               const result = await db.query(`SELECT * FROM users where email=${emailToPass.toLowerCase()} `);
+               const result = await db.query(`SELECT * FROM users where email=${emailToPass} `);
                const user= await result.rows[0];
-              // console.log(user);
-               //const pass=result.rows[0].password;
-               var checkemail= await checkEmailPresence(username.toLowerCase());
+
+               var checkemail= await checkEmailPresence(username);
                if(checkemail==true){
                  const pass=result.rows[0].password;
                  bcrypt.compare(password, pass, (err, bool) => {
+
                    if (err) {
                      console.error(err);
                      return cb(err);
@@ -1021,6 +972,7 @@ else{
                    }
                  });
                
+
                } else {
                  return cb(null, false);
                }
@@ -1031,20 +983,20 @@ else{
            })
          );
          
-        /**
-        * Authentification related methods
-        */
          
          passport.serializeUser((user, cb) => {
            cb(null, user);
+
          });
          
          passport.deserializeUser((user, cb) => {
            cb(null, user);
+
          });
 
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+
   });
   
