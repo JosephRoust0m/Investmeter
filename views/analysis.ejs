@@ -11,8 +11,8 @@
 
 </head>
 
-<body id="gradient-background" >
-<header class="d-flex flex-wrap justify-content-center py-3 mb-0 border-bottom"  >
+<body >
+<header class="d-flex flex-wrap justify-content-center py-3 mb-0 border-bottom"  id="gradient-background">
   <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
     <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
     <span class="fs-4" style="color:white">Investmeter</span>
@@ -25,7 +25,8 @@
     <li class="nav-item"><a href="/write" class="nav-link" id="one" style="color:white">Contribute</a></li>
   </ul>
 </header>
-<div class="content" style="background-color: white;">
+<div class="content " style="background-color: white;">
+
 <div class="justify-content-end">
 <div class="row">
   <div class="col-md-6"></div>
@@ -41,12 +42,13 @@
     <form action="/signout" class="mt-1">
       <button  class="btn btn-danger " type="submit">Sign Out</button>
     </form>
+    </div>
     <%}%>
   </div>
 </div>
 
 
-
+  <div class="container">
   <% if (locals.error){ %>
 <div class="container">
 <h2 style="color: rgb(147, 7, 7); font-size: 15pt; ">
@@ -59,20 +61,14 @@
   <div class="form-floating " id="firstContainer" >
     <input class="form-control " id="floatingInput" name="stock" type="text"  >
     <label for="floatingInput" >Search for your desired stock</label> 
-    <div  >
+    <div>
       <button class="btn btn-dark py-2 btn-lg my-1" type="submit">Search</button>
     </div>
   </div>
+  </div>
 </form>
-<div class="container">
-<h1 style="visibility: hidden;">
-  Lorem ipsum odor amet, consectetuer adipiscing elit. Facilisis massa semper pretium purus torquent at mattis nisl erat. Sem elit egestas fringilla eu neque luctus. Posuere est vestibulum felis; euismod suscipit felis. Mi integer justo bibendum lacus, turpis risus rhoncus suscipit. Ultrices elit faucibus metus inceptos, bibendum turpis ultricies. Conubia nam donec aenean eget justo consequat fusce in.
-  Varius netus hendrerit dictum dapibus fermentum. Massa eleifend curabitur risus urna cras elementum. Egestas ut lorem proin, cursus convallis aliquam. Nisl augue accumsan facilisi dapibus natoque faucibus tristique. Adipiscing vitae auctor platea etiam suscipit integer primis 
 
-</h1>
-</div>
-</div>
-<%  }  else {%>
+<%  } else {%>
 
   
 <form action="/choose" method="POST">
@@ -80,9 +76,10 @@
     <div class="form-floating " id="firstContainer" >
       <input class="form-control " id="floatingInput" name="stock" type="text"  >
       <label for="floatingInput" >Search for your desired stock</label> 
-      <div  >
+      <div >
         <button class="btn btn-dark py-2 btn-lg my-1" type="submit">Search</button>
       </div>
+    </div>
     </div>
   </form>
   
@@ -149,89 +146,34 @@
     </tbody>
   </table>
 
-</div>
-
-
-</form>
-
-<div class="container predictions " >
-<p style="align-items: center; font-family:Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 "> Your Next Move: </p> 
-  <table class="table table table-sm">
-    <thead>
-      <tr>
-        <th scope="col"> For The Next 2 Weeks : </th>
-        <th scope="col"> For The Next 50 Days :</th>
-        <th scope="col"> For The Next Year :</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-      <td>
-        <% if(BiWeekly>0.75){ %>
-          
-          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success mb-3" style="width: 50%;" >Buy</button>
-      
-         <%} else if(BiWeekly<-0.75){ %>
-           
-         <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger mb-3 "  style="width: 50%;">Sell</button>
-        
-           <%} else { %>
-             
-              
-            <button type="button" class="btn btn-warning mb-3 " style="color:whitesmoke; background-color: orange; width: 50%;">Hold</button>
-          
-            <%}%>
-      </td>
-      <td>
-        <% if(Fifty>0.75){ %>
-          
-          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success mb-3" style="width: 50%;">Buy</button>
-      
-         <%} else if(Fifty<-0.75){ %>
-           
-         <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger mb-3 " style="width: 50%;" >Sell</button>
-        
-           <%} else { %>
-             
-              
-             <button type="button" class="btn btn-warning mb-3 " style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
-          
-            <%}%>
-      </td>
-      <td>
-        <% if(Yearly>0.75){ %>
-          
-          <!-- <h3  style="font-size: 12;">What should you do ? </h3>-->
-         <button type="button" class="btn btn-success mb-3 " style="width: 50%;">Buy</button>
-      
-         <%} else if(Yearly<-0.75){ %>
-           
-         <!--   <div class="container mt-5">-->
-           <button type="button" class="btn btn-danger mb-3" style="width: 50%;" >Sell</button>
-        
-           <%} else { %>
-             
-              
-            <button type="button" class="btn btn-warning w-60 mb-3" style="color: whitesmoke; background-color: orange; width: 50%;">Hold</button>
-          
-            <%}%>
-      </td>
-
-      </tr>
-    </tbody>
-  </table>
-  </div>
+<%}%> 
+<div class="container predictions d-flex flex-column align-items-center mb-5">
+  <p style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 17.5pt;" class="mt-5 mb-3 text-center">Your Next Move:</p>
+  <form  id="adviceForm" class="w-100" style="max-width: 600px;" autocomplete="off">
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" name="stock" placeholder="Stock Symbol" required>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" name="period" id="periodSelect" required>
+          <option value="" disabled selected>Select Period</option>
+          <option value="10">10 Trading Days</option>
+          <option value="50">50 Trading Days</option>
+          <option value="365">365 Trading Days</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Check AI Advice</button>
+      </div>
+    </div>
+  </form>
+  <div id ="result" class="text-center mt-4 mb-4 w-100" style="max-width: 600px;">
 
   </div>
+
 </div>
-
-  
-    
-
+</div>
+</div>
 
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -299,11 +241,96 @@ var form = month+"/"+day;
      }
      createChart();
      
+    document.getElementById('adviceForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      document.getElementById('result').innerHTML = `
+      <div class="d-flex align-items-center justify-content-center">
+        <span style="font-size: 1.2em; margin-right: 10px;">Finding results</span>
+        <span class="dot-flashing" style="margin-left: 20px;"></span> <!-- Added margin-left -->
+      </div>
+        `;
+      const stock = this.stock.value;
+      const period = this.period.value;
+      console.log(stock+" "+period);
+      console.log(JSON.stringify({ stock, period }));
+      try {
+        const response = await fetch('/advice', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ stock, period })
+        });
+
+        const data = await response.json();
+        
+          let btnClass = '', btnText = '';
+          if (data.result === 'Buy') {
+          btnClass = 'btn-success';
+          btnText = 'Buy';
+          } else if (data.result === 'Sell') {
+          btnClass = 'btn-danger';
+          btnText = 'Sell';
+          } else if (data.result === 'Hold') {
+          btnClass = 'btn-warning';
+          btnText = 'Hold';
+          }
+          if (btnClass && btnText) {
+          document.getElementById('result').innerHTML = `
+            
+            <button type="button" class="btn ${btnClass}" style="width: 100%;${btnClass==='btn-warning' ? 'color: whitesmoke; background-color: orange;' : ''}">${btnText}</button>
+            
+          `;
+          }
+        }
+      catch (err) {
+        alert('Error fetching advice');
+      }
+    });
+
      </script>
-</body>
-
-<%}%> 
-<%- include("partials/footer.ejs"); %>
-
+  </body>
   
+  <div id="gradient-background">
+<%- include("partials/footer.ejs"); %>
+</div>
+
+            <style>
+            .dot-flashing {
+              position: relative;
+              width: 5px;
+              height: 5px;
+              border-radius: 0px;
+              background-color: black;
+              color: black;
+              animation: dotFlashing 1s infinite linear alternate;
+              margin-left: 8px;
+              display: inline-block;
+            }
+            .dot-flashing::before, .dot-flashing::after {
+              content: '';
+              display: inline-block;
+              position: absolute;
+              top: 0;
+              width: 5px;
+              height: 5px;
+              border-radius: 0px;
+              background-color: black;
+              color: black;
+            }
+            .dot-flashing::before {
+              left: -18px;
+              animation: dotFlashing 1s infinite alternate;
+              animation-delay: 0s;
+            }
+            .dot-flashing::after {
+              left: 18px;
+              animation: dotFlashing 1s infinite alternate;
+              animation-delay: 0.5s;
+            }
+            @keyframes dotFlashing {
+              0% { opacity: 0.2; }
+              50%, 100% { opacity: 1; }
+            }
+            </style>
 </html>

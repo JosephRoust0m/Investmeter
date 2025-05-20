@@ -10,12 +10,13 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import key,{password,secret} from "./config.js";
+import { promises as fs } from "fs";
 
 
 const app = express();
 const port = 3000;
 const saltRounds=10;
-
+app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 const API_URL = "https://api.polygon.io";
@@ -125,12 +126,8 @@ app.get("/", async (req, res) => {
         const low=response.data["results"][length-1]["l"];
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
-
-        const biWeekly= await advice("AAPL",10); 
-        const fifty= await advice("AAPL",50); 
-        const yearly= await advice("AAPL",365);
         
-        console.log("change 10 days is "+biWeekly+" "+"change 50 days is "+fifty+" "+"change 365 days is "+yearly+" ");
+        
 
 
 for(var i=0; i<info.length;i++) {
@@ -152,9 +149,6 @@ else{
           vw:volumeWeighted,
           high:high,
           low:low,
-          BiWeekly:biWeekly,
-          Fifty: fifty,
-          Yearly:yearly,
           loggedin:req.isAuthenticated(),
           prices:prices,
           number:90
@@ -241,10 +235,6 @@ else{
           const low=response.data["results"][length-1]["l"];
           const high=response.data["results"][length-1]["h"];
           const close=response.data["results"][length-1]["c"];
-
-          const fifty= await advice(stockInUse,50); 
-          const yearly=await advice(stockInUse,365);
-          const biWeekly=await advice(stockInUse,10); 
   
   for(var i=0; i<info.length;i++) {
 
@@ -265,9 +255,6 @@ else{
             vw:volumeWeighted,
             high:high,
             low:low,
-            BiWeekly:biWeekly,
-            Fifty: fifty,
-            Yearly:yearly,
             loggedin:req.isAuthenticated(),
             prices:prices,
             period:periodSentence,
@@ -346,10 +333,6 @@ console.log("The name of the stock is "+stockname);
         const high=response.data["results"][length-1]["h"];
         const close=response.data["results"][length-1]["c"];
 
-        const fifty= await advice(stockname,50);
-        const yearly= await advice(stockname,365);
-        const biWeekly= await advice(stockname,10);
-
        
 
 
@@ -373,9 +356,6 @@ else{
           vw:volumeWeighted,
           high:high,
           low:low,
-          BiWeekly:biWeekly,
-          Fifty: fifty,
-          Yearly:yearly,
           loggedin:req.isAuthenticated(),
           prices:prices,
           number:90
@@ -713,7 +693,134 @@ else{
       });
 
     });
+
+            /**
+         * Authentication related methods
+         */
         
+    app.post("/signin/check", passport.authenticate("local",{
+      successRedirect:"/blog",
+      failureRedirect:"/failedlogin",
+      }));
+      
+      passport.use(new Strategy(async function verify(username,password, cb) {
+          try {
+            const emailToPass="'"+username+"'";
+            const result = await db.query(`SELECT * FROM users where email=${emailToPass} `);
+            const user= await result.rows[0];
+
+            var checkemail= await checkEmailPresence(username);
+            if(checkemail==true){
+              const pass=result.rows[0].password;
+              bcrypt.compare(password, pass, (err, bool) => {
+
+                if (err) {
+                  console.error(err);
+                  return cb(err);
+                } else {
+                  if (bool) {
+                    console.log(bool);
+                    return cb(null, user);
+                  } else {
+                    return cb(null, false);
+                  }
+                }
+              });
+            
+
+            } else {
+              return cb(null, false);
+            }
+            
+          } catch (err) {
+            console.log(err);
+          }
+        })
+      );
+
+      
+         
+         passport.serializeUser((user, cb) => {
+           cb(null, user);
+
+         });
+         
+         passport.deserializeUser((user, cb) => {
+           cb(null, user);
+
+         });
+        
+    app.post("/advice", async (req,res) =>{
+    console.log(req);
+    var stock= req.body.stock;
+    var period=req.body.period;
+     //console.log("the stock is "+req.body["stock"]);
+     
+     var result = await advice(stock,period);
+     if(period==="10"){
+      var advices=[];
+      advices.push(result);
+      for (var i=0;i<7;i++){
+        advices.push(await advice(stock,period));
+      }
+      const mean = advices.reduce((sum, num) => sum + num, 0) / advices.length;
+      console.log("the mean is "+mean);
+      result=mean;
+     }
+     else if (period==="50"){
+      var advices=[];
+      advices.push(result);
+      for (var i=0;i<4;i++){
+        advices.push(await advice(stock,period));
+      }
+      const mean = advices.reduce((sum, num) => sum + num, 0) / advices.length;
+      console.log("the mean is "+mean);
+      result=mean;
+     }
+     var resultToSend="";
+    
+    const filePath = __dirname + "/public/data/stock_data.json";
+    let entry = {
+      stock,
+      period,
+      result,
+      timestamp: new Date().toISOString()
+    };
+    try {
+      let fileData = "[]";
+      try {
+        fileData = await fs.readFile(filePath, "utf8");
+      } catch (err) {
+        // File might not exist yet, that's fine
+      }
+      let arr = [];
+      try {
+        arr = JSON.parse(fileData);
+        if (!Array.isArray(arr)) arr = [];
+      } catch (err) {
+        arr = [];
+      }
+      arr.push(entry);
+      await fs.writeFile(filePath, JSON.stringify(arr, null, 2));
+    } catch (err) {
+      console.error("Error writing to stock_data.json:", err);
+    }
+    
+    if(result>0.5){
+      resultToSend="Buy";
+    }
+    else if (result<-0.5){
+      resultToSend="Sell";
+    }
+    else{
+      resultToSend="Hold";
+    }
+
+    res.json({
+            result:resultToSend
+          });
+     
+    });
         async function checkUserCredentials(eml,username){
           const usersInfo =  await db.query("SELECT * FROM users");
       
@@ -741,6 +848,7 @@ else{
         
         }
 
+
         /**
          * 
          * @param {*} stockname 
@@ -749,7 +857,7 @@ else{
          * helper function to determine the advice to give to users for each investment period
          */
 
-    async function advice(stockname,period){
+  async function advice(stockname,period){
     
       var leniency= 0;
       if(period===365){
@@ -762,7 +870,6 @@ else{
 
     var prices=[];
     var news=[];
-    var averageGrowth=0;
     var averageNews=0;
     var averageScore=0;
     var positiveScore=0;
@@ -810,21 +917,21 @@ else{
           const response2 = await axios.get(API_URL +`/v2/reference/news?ticker=${stockname}&order=desc&limit=100`,config);
           const data= response.data["results"];
           const data2= response2.data["results"];
-
-          for (var i= 0;i<data.length-1;i++){
-            var var1 = parseFloat(data[i]["c"]);
-            var var2 = parseFloat(data[i+1]["c"]);
-            var toadd= (var2-var1)/var1;
+          
+          //extract the closing prices from the data
+          for (var i= 0;i<data.length;i++){
+            var toadd = parseFloat(data[i]["c"]);
             prices.push(toadd);
           }
 
-          for (var i= 0;i<prices.length;i++){
-            averageGrowth=averageGrowth+prices[i];
-            
-          }
-          averageGrowth=averageGrowth/prices.length;
-
+          const ML_score = await axios.post('http://localhost:5000/analyze', {
+            prices: prices
+          });
           
+          const averageML=ML_score.data.prediction;
+          /*
+          Sentiment analysis of the news articles
+          */
           if(period !==0){
           for (var i=0;i<period;i++){
 
@@ -837,6 +944,7 @@ else{
                 if(var1[j]["ticker"]==`${stockname}`) {
                 
                     var toadd = var1[j]["sentiment"];
+                   
                     news.push(toadd);
                 }
             }
@@ -926,73 +1034,20 @@ else{
   }
 }
 
-          averageScore=(averageGrowth*100)+averageNews/2;
+          averageScore=averageML+averageNews/2;
           console.log("average score is "+averageScore);
-        return averageScore + averageScore*(leniency/2);
+          return averageScore;
 
           }
+        
 
-          catch (error) {
+        catch (error) {
             console.log(error.message);
             return "stock not found";
         }
           
         }
 
-        /**
-         * Authentication related methods
-         */
-        
-        app.post("/signin/check", passport.authenticate("local",{
-          successRedirect:"/blog",
-          failureRedirect:"/failedlogin",
-         }));
-         
-         passport.use(new Strategy(async function verify(username,password, cb) {
-             try {
-               const emailToPass="'"+username+"'";
-               const result = await db.query(`SELECT * FROM users where email=${emailToPass} `);
-               const user= await result.rows[0];
-
-               var checkemail= await checkEmailPresence(username);
-               if(checkemail==true){
-                 const pass=result.rows[0].password;
-                 bcrypt.compare(password, pass, (err, bool) => {
-
-                   if (err) {
-                     console.error(err);
-                     return cb(err);
-                   } else {
-                     if (bool) {
-                       console.log(bool);
-                       return cb(null, user);
-                     } else {
-                       return cb(null, false);
-                     }
-                   }
-                 });
-               
-
-               } else {
-                 return cb(null, false);
-               }
-               
-             } catch (err) {
-               console.log(err);
-             }
-           })
-         );
-         
-         
-         passport.serializeUser((user, cb) => {
-           cb(null, user);
-
-         });
-         
-         passport.deserializeUser((user, cb) => {
-           cb(null, user);
-
-         });
 
 
   app.listen(port, () => {
