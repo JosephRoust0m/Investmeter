@@ -30,7 +30,6 @@ const config = {
 };
 
 
-
 app.use(
   session({
     secret:secret,
@@ -57,26 +56,6 @@ db.connect();
 
 var  posts=[];
 var start=true;
-
-async function getPosts(){
-  for(var i=0; i<posts.length;i++){
-    posts.splice(i);
-  }
-
-  var data =  await db.query(`SELECT * FROM posts order by id desc `);
-  data.rows.forEach((post) => {
-    posts.push({author : post.author,
-                time:post.time,
-                content:post.content,
-                title:post.title,
-                id:post.id
-    }
-  
-    );
-  });
-  return posts;
-}
-
 
 app.get("/", async (req, res) => {
 
@@ -583,7 +562,7 @@ else{
 
         
         
-      app.post('/write/:myVariable', (req, res) => {
+    app.post('/write/:myVariable', (req, res) => {
 
     var formId2= req.params.myVariable;
     if(req.body.text.length>0 && req.body.subject.length>0) {
@@ -821,6 +800,17 @@ else{
           });
      
     });
+
+    /**
+    *helper functions from here on
+    */
+
+   /**
+    * check if the user credentials are already present in the database
+    * @param {*} eml 
+    * @param {*} username 
+    * @returns 
+    */
         async function checkUserCredentials(eml,username){
           const usersInfo =  await db.query("SELECT * FROM users");
       
@@ -834,6 +824,11 @@ else{
           return false;
                
         }
+        /**
+         * check the presence of the email in the database
+         * @param {*} eml 
+         * @returns 
+         */
         async function checkEmailPresence(eml){
           const usersInfo =  await db.query("SELECT * FROM users");
         
@@ -848,6 +843,28 @@ else{
         
         }
 
+        /**
+         * get posts
+         * @returns posts
+         */
+        async function getPosts(){
+        for(var i=0; i<posts.length;i++){
+          posts.splice(i);
+        }
+
+        var data =  await db.query(`SELECT * FROM posts order by id desc `);
+        data.rows.forEach((post) => {
+          posts.push({author : post.author,
+                      time:post.time,
+                      content:post.content,
+                      title:post.title,
+                      id:post.id
+          }
+        
+          );
+        });
+        return posts;
+      }
 
         /**
          * 
@@ -1047,7 +1064,6 @@ else{
         }
           
         }
-
 
 
   app.listen(port, () => {
